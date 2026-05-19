@@ -2,21 +2,39 @@
 node_modules/
 package-lock.json
 yarn.lock
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 
-# IDE
+# IDE & Editor
 .vscode/
 .idea/
+.devkit/
+.claude/
 *.swp
 *.swo
 *.swn
 .DS_Store
+*.code-workspace
 
-# Build
+# Build & Artifacts
 dist/
 build/
 *.log
+*.egg-info/
 
-# Environment
+# Environment & Secrets
 .env
 .env.local
 .env.*.local
+
+# Package/Archive
+*.zip
+*.tar.gz
+*.tar
+
+# OS specific
+Thumbs.db
+.DS_Store

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ Set Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="container">
+                <h1 class="logo">🎵 DJ Set Studio</h1>
+                <div id="nav-user" class="nav-user"></div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <div id="login-page" class="page active">
+                <div class="auth-card">
+                    <h2>登录</h2>
+                    <form id="login-form">
+                        <input type="email" id="login-email" placeholder="邮箱" required>
+                        <input type="password" id="login-password" placeholder="密码" required>
+                        <button type="submit">登录</button>
+                    </form>
+                    <p>还没有账号？<a href="#" id="show-register">注册</a></p>
+                </div>
+            </div>
+
+            <div id="register-page" class="page">
+                <div class="auth-card">
+                    <h2>注册</h2>
+                    <form id="register-form">
+                        <input type="text" id="register-username" placeholder="用户名" required>
+                        <input type="email" id="register-email" placeholder="邮箱" required>
+                        <input type="password" id="register-password" placeholder="密码" required>
+                        <button type="submit">注册</button>
+                    </form>
+                    <p>已有账号？<a href="#" id="show-login">登录</a></p>
+                </div>
+            </div>
+
+            <div id="main-page" class="page">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="tracks">歌曲库</button>
+                    <button class="tab-btn" data-tab="sets">我的Sets</button>
+                </div>
+
+                <div id="tracks-tab" class="tab-content active">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="搜索歌曲、艺术家...">
+                            <button id="search-btn">🔍 搜索</button>
+                        </div>
+                        <button id="add-track-btn" class="btn-add">➕ 手动添加</button>
+                    </div>
+
+                    <div id="search-results" class="search-results">
+                        <div class="results-section" id="local-results-section">
+                            <h3>📚 我的歌曲库</h3>
+                            <div id="local-tracks-list" class="tracks-list"></div>
+                        </div>
+                        <div class="results-section" id="itunes-results-section" style="display:none;">
+                            <h3>🎵 iTunes搜索结果 <span class="hint">（点击添加到歌曲库）</span></h3>
+                            <div id="itunes-tracks-list" class="tracks-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sets-tab" class="tab-content">
+                    <div class="actions">
+                        <button id="create-set-btn">➕ 创建Set</button>
+                    </div>
+                    <div id="sets-list" class="sets-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="track-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>手动添加歌曲</h2>
+            <form id="track-form">
+                <input type="text" id="track-title" placeholder="歌曲名称" required>
+                <input type="text" id="track-artist" placeholder="艺术家" required>
+                <input type="text" id="track-genre" placeholder="风格 (如: House, Techno)">
+                <input type="number" id="track-bpm" placeholder="BPM" min="0">
+                <input type="number" id="track-duration" placeholder="时长(秒)" min="0">
+                <input type="text" id="track-cover-url" placeholder="封面图URL">
+                <button type="submit">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="set-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>创建Set</h2>
+            <form id="set-form">
+                <input type="text" id="set-name" placeholder="Set名称" required>
+                <textarea id="set-description" placeholder="描述" rows="3"></textarea>
+                <button type="submit">创建</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

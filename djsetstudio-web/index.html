@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJset Studio - 智能歌单生成与DJ Set展示平台</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🎧 DJset Studio</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#" onclick="showPage('home')">首页</a>
+                <a href="#" onclick="showPage('tracks')">歌曲库</a>
+                <a href="#" onclick="showPage('sets')">我的Sets</a>
+                <a href="#" onclick="showPage('search')">搜索</a>
+                <a href="#" id="authLink" onclick="showPage('login')">登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h2>欢迎来到 DJset Studio</h2>
+                <p>智能歌单生成 • DJ Set 管理 • 相似歌曲推荐</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="showPage('tracks')">浏览歌曲</button>
+                    <button class="btn btn-secondary" onclick="showPage('search')">搜索歌曲</button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🎵 智能推荐</h3>
+                    <p>基于BPM和风格的智能歌曲推荐算法</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📝 Set管理</h3>
+                    <p>创建和管理你的DJ Set，支持拖拽排序</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔍 强大搜索</h3>
+                    <p>支持关键词、艺术家、风格、BPM筛选</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 登录注册页 -->
+        <div id="login" class="page">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <h2 id="authTitle">登录</h2>
+                    <form id="authForm">
+                        <div class="form-group">
+                            <label for="email">邮箱</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <div class="form-group" id="usernameGroup" style="display: none;">
+                            <label for="username">用户名（可选）</label>
+                            <input type="text" id="username">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </form>
+                    <p class="auth-toggle">
+                        <span id="authToggleText">还没有账号？</span>
+                        <a href="#" onclick="toggleAuthMode()">立即注册</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 歌曲库页 -->
+        <div id="tracks" class="page">
+            <div class="page-header">
+                <h2>歌曲库</h2>
+                <button class="btn btn-primary" onclick="showAddTrackModal()">添加歌曲</button>
+            </div>
+            <div id="tracksList" class="tracks-grid">
+                <!-- 歌曲列表将动态加载 -->
+            </div>
+        </div>
+
+        <!-- 搜索页 -->
+        <div id="search" class="page">
+            <div class="search-container">
+                <h2>搜索歌曲</h2>
+                <div class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="searchKeyword">关键词</label>
+                            <input type="text" id="searchKeyword" placeholder="歌名或艺术家">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchGenre">风格</label>
+                            <input type="text" id="searchGenre" placeholder="如: House, Techno">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="searchMinBpm">最小BPM</label>
+                            <input type="number" id="searchMinBpm" placeholder="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMaxBpm">最大BPM</label>
+                            <input type="number" id="searchMaxBpm" placeholder="140">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="searchTracks()">搜索</button>
+                </div>
+                <div id="searchResults" class="tracks-grid">
+                    <!-- 搜索结果将显示在这里 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 我的Sets页 -->
+        <div id="sets" class="page">
+            <div class="page-header">
+                <h2>我的Sets</h2>
+                <button class="btn btn-primary" onclick="showCreateSetModal()">创建新Set</button>
+            </div>
+            <div id="setsList" class="sets-grid">
+                <!-- Sets列表将动态加载 -->
+            </div>
+        </div>
+
+        <!-- Set详情页 -->
+        <div id="setDetail" class="page">
+            <div class="page-header">
+                <button class="btn btn-secondary" onclick="showPage('sets')">← 返回</button>
+                <h2 id="setDetailTitle"></h2>
+                <div>
+                    <button class="btn btn-secondary" onclick="showEditSetModal()">编辑</button>
+                    <button class="btn btn-danger" onclick="deleteCurrentSet()">删除</button>
+                </div>
+            </div>
+            <p id="setDetailDescription"></p>
+
+            <!-- 添加歌曲到Set的面板 -->
+            <div class="add-track-panel">
+                <h3>📀 添加歌曲到Set</h3>
+                <div class="add-track-methods">
+                    <!-- 方式1: 从歌曲库搜索添加 -->
+                    <div class="add-method">
+                        <h4>从歌曲库搜索</h4>
+                        <div class="search-add-track">
+                            <input type="text" id="setTrackSearch" placeholder="搜索歌曲名或艺术家..." oninput="searchTracksForSet(this.value)">
+                            <div id="setTrackSearchResults" class="search-results-dropdown"></div>
+                        </div>
+                    </div>
+
+                    <!-- 方式2: 手动录入新歌曲 -->
+                    <div class="add-method">
+                        <h4>手动录入新歌曲</h4>
+                        <div class="manual-add-track">
+                            <div class="form-row">
+                                <input type="text" id="newTrackTitle" placeholder="歌曲名称 *" required>
+                                <input type="text" id="newTrackArtist" placeholder="艺术家">
+                            </div>
+                            <div class="form-row">
+                                <input type="number" id="newTrackBpm" placeholder="BPM">
+                                <select id="newTrackGenre">
+                                    <option value="">选择风格</option>
+                                    <option value="House">House</option>
+                                    <option value="Tech House">Tech House</option>
+                                    <option value="Deep House">Deep House</option>
+                                    <option value="Progressive House">Progressive House</option>
+                                    <option value="Techno">Techno</option>
+                                    <option value="Melodic Techno">Melodic Techno</option>
+                                    <option value="Trance">Trance</option>
+                                    <option value="Dubstep">Dubstep</option>
+                                    <option value="Drum & Bass">Drum & Bass</option>
+                                    <option value="Future Bass">Future Bass</option>
+                                    <option value="Big Room">Big Room</option>
+                                    <option value="Electro House">Electro House</option>
+                                    <option value="Tropical House">Tropical House</option>
+                                    <option value="Chillout">Chillout</option>
+                                    <option value="Hardstyle">Hardstyle</option>
+                                    <option value="Psytrance">Psytrance</option>
+                                </select>
+                                <input type="text" id="newTrackKey" placeholder="调性 (如Am)">
+                            </div>
+                            <button class="btn btn-primary" onclick="addNewTrackToSet()">+ 添加到Set</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="setDetailTracks" class="tracks-list">
+                <!-- Set中的歌曲将显示在这里 -->
+            </div>
+            <div class="recommendations">
+                <h3>🎯 推荐歌曲</h3>
+                <button class="btn btn-secondary" onclick="loadRecommendations()">获取推荐</button>
+                <div id="recommendationsList" class="tracks-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加歌曲模态框 -->
+    <div id="addTrackModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addTrackModal')">&times;</span>
+            <h2>添加新歌曲</h2>
+            <form id="addTrackForm">
+                <div class="form-group">
+                    <label for="trackTitle">歌名 *</label>
+                    <input type="text" id="trackTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="trackArtist">艺术家</label>
+                    <input type="text" id="trackArtist">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="trackBpm">BPM</label>
+                        <input type="number" id="trackBpm">
+                    </div>
+                    <div class="form-group">
+                        <label for="trackGenre">风格</label>
+                        <input type="text" id="trackGenre">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="trackKey">调性</label>
+                        <input type="text" id="trackKey">
+                    </div>
+                    <div class="form-group">
+                        <label for="trackDuration">时长(秒)</label>
+                        <input type="number" id="trackDuration">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="trackCover">封面URL</label>
+                    <input type="text" id="trackCover" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">添加</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 创建Set模态框 -->
+    <div id="createSetModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal('createSetModal')">&times;</span>
+            <h2 id="createSetModalTitle">创建新Set</h2>
+            <form id="createSetForm">
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="setName">Set名称 *</label>
+                        <input type="text" id="setName" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="setCover">封面URL</label>
+                        <input type="text" id="setCover" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="setDescription">描述</label>
+                    <textarea id="setDescription" rows="2"></textarea>
+                </div>
+
+                <!-- 歌曲列表区域 -->
+                <div class="tracks-section">
+                    <div class="section-header">
+                        <h3>添加歌曲</h3>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="addTrackInputRow()">+ 添加一行</button>
+                    </div>
+                    <div id="trackInputList" class="track-input-list">
+                        <!-- 动态添加的歌曲输入行 -->
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">创建Set</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 推荐歌曲弹出框 -->
+    <div id="recommendPopup" class="recommend-popup" style="display:none;">
+        <div class="recommend-popup-header">
+            <span>推荐歌曲</span>
+            <span class="close-popup" onclick="closeRecommendPopup()">&times;</span>
+        </div>
+        <div id="recommendPopupContent" class="recommend-popup-content">
+            <!-- 推荐歌曲列表 -->
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tracks.js"></script>
+    <script src="js/sets.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
