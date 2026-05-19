@@ -27,7 +27,7 @@ DJset Studio是一个专为DJ和音乐爱好者设计的智能音乐管理平台
 ### 设计文档
 
 - [产品需求文档 (PRD)](DJsetstudio（PRD）.md)
-- [系统设计文档 (SDD)](DJsetstudio(SDD).md)
+- [系统设计文档 (SDD)](<DJsetstudio(SDD).md>)
 
 ## ✨ 功能特性
 
@@ -194,7 +194,7 @@ Web前端将在 http://localhost:8000 启动
 编辑 `djsetstudio-web/js/config.js`：
 
 ```javascript
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = "http://localhost:5000/api";
 ```
 
 ### 5. 测试访问
@@ -215,6 +215,7 @@ const API_BASE_URL = 'http://localhost:5000/api';
 3. 在 `routes/__init__.py` 中注册蓝图
 
 示例：
+
 ```python
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required
@@ -245,9 +246,9 @@ def my_function():
 
 ```css
 :root {
-    --primary-color: #6366f1;
-    --bg-color: #0f172a;
-    /* ... */
+  --primary-color: #6366f1;
+  --bg-color: #0f172a;
+  /* ... */
 }
 ```
 
@@ -296,6 +297,7 @@ chmod +x deploy.sh
 ### 认证接口
 
 #### 注册
+
 ```http
 POST /api/auth/register
 Content-Type: application/json
@@ -308,6 +310,7 @@ Content-Type: application/json
 ```
 
 #### 登录
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -319,6 +322,7 @@ Content-Type: application/json
 ```
 
 #### 获取当前用户
+
 ```http
 GET /api/auth/me
 Authorization: Bearer <token>
@@ -327,16 +331,19 @@ Authorization: Bearer <token>
 ### 歌曲接口
 
 #### 获取所有歌曲
+
 ```http
 GET /api/tracks
 ```
 
 #### 搜索歌曲
+
 ```http
 GET /api/tracks/search?keyword=house&min_bpm=120&max_bpm=140&genre=House
 ```
 
 #### 获取歌曲推荐
+
 ```http
 GET /api/tracks/{id}/recommend?limit=10
 ```
@@ -344,12 +351,14 @@ GET /api/tracks/{id}/recommend?limit=10
 ### Set接口
 
 #### 获取用户的所有Sets
+
 ```http
 GET /api/sets
 Authorization: Bearer <token>
 ```
 
 #### 创建Set
+
 ```http
 POST /api/sets
 Authorization: Bearer <token>
@@ -363,12 +372,14 @@ Content-Type: application/json
 ```
 
 #### 获取Set详情
+
 ```http
 GET /api/sets/{id}
 Authorization: Bearer <token>
 ```
 
 #### 更新Set
+
 ```http
 PUT /api/sets/{id}
 Authorization: Bearer <token>
@@ -381,6 +392,7 @@ Content-Type: application/json
 ```
 
 #### 删除Set
+
 ```http
 DELETE /api/sets/{id}
 Authorization: Bearer <token>
@@ -404,19 +416,13 @@ Authorization: Bearer <token>
 
 ## 👥 作者
 
-- **坚铭** - *初始工作* - [GitHub](https://github.com/yourusername)
+- **坚铭** - _初始工作_ - [GitHub](https://github.com/yourusername)
 
 ## 🙏 致谢
 
 - Flask团队提供的优秀Web框架
 - Material Design团队的设计指南
 - 所有开源贡献者
-
-## 📞 联系方式
-
-- 项目主页: https://github.com/yourusername/djsetstudio
-- 问题反馈: https://github.com/yourusername/djsetstudio/issues
-- 邮箱: your.email@example.com
 
 ---
 
