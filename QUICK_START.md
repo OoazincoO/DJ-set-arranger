@@ -22,7 +22,7 @@ myDJset/
 
 ```bash
 # 1. 进入项目目录
-cd /path/to/myDJset
+cd /path/to/DJ-set-arranger
 
 # 2. 给部署脚本执行权限
 chmod +x deploy_batch_import.sh
